@@ -1,0 +1,4 @@
+ops
+pymssql
+python-hosts
+git+https://github.com/juju/charm-helpers.git#egg=charmhelpers

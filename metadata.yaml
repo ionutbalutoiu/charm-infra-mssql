@@ -1,0 +1,20 @@
+name: mssql
+summary: A charm used to deploy Microsoft SQL Server cluster on Linux.
+description: |
+  A charm used to deploy Microsoft SQL Server cluster on Linux with high
+  availability (HA). The cluster is deployed using the hacluster subordinate
+  charm, and it configures an SQL Server availability group.
+tags:
+  - database
+series:
+  - bionic
+provides:
+  db:
+    interface: mssql
+peers:
+  cluster:
+    interface: mssql-cluster
+requires:
+  ha:
+    interface: hacluster
+    scope: container

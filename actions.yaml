@@ -1,0 +1,2 @@
+get-sa-password:
+  description: Returns the SQL Server SA password

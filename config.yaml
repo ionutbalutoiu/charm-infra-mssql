@@ -1,0 +1,32 @@
+options:
+  accept-eula:
+    type: boolean
+    default: False
+    description: Confirms acceptance of the End-User Licensing Agreement.
+  product-id:
+    type: string
+    default: Developer
+    description: |
+      The SQL Server edition or product key. Valid options are:
+        * Evaluation
+        * Developer
+        * Express
+        * Web
+        * Standard
+        * Enterprise
+        * A product key
+      If specifying a product key, it must be in the form of
+      #####-#####-#####-#####-#####, where '#' is a number or a letter.
+  vip:
+    type: string
+    default:
+    description: |
+      Virtual IP to use to front SQL Server in active/passive HA configuration.
+  vip_iface:
+    type: string
+    default: eth0
+    description: Network interface on which to place the Virtual IP.
+  vip_cidr:
+    type: int
+    default: 24
+    description: Netmask that will be used for the Virtual IP.
