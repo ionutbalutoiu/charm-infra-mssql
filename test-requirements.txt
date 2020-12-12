@@ -1,3 +1,4 @@
+netifaces
 mock
 flake8
 stestr
