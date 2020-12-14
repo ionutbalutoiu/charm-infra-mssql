@@ -6,11 +6,46 @@ import logging
 import pwd
 import grp
 import os
+import subprocess
 import time
 
-from pymssql import connect
+from charmhelpers.fetch import apt_update, apt_install
+
+from utils import retry_on_error
 
 logger = logging.getLogger(__name__)
+
+try:
+    from pymssql import connect  # NOQA:F401
+except ImportError:
+    # We try to re-install 'pymssql' pip package directly on the deployment
+    # machine, if the bundled package with charm couldn't be imported.
+    #
+    # The 'pymssql' package is installed with a cpython library, which is
+    # pre-compiled for every supported Python version.
+    #
+    # So, when we build the charm via 'charmcraft build', the built charm
+    # will contain the cpython library corresponding to the Python version
+    # used to build the charm.
+    #
+    # The Python version from the deployment machine might not be the same,
+    # and the charm will fail to import 'pymssql'.
+    # For example: we build the charm on Ubuntu Focal with Python 3.8, and we
+    # deploy it on Ubuntu Bionic with Python 3.6.
+    #
+    # As a workaround, we try to re-install the charm 'requirements.txt'
+    # dependencies on the deployment machine to fix this issue.
+    logger.warning(
+        'Failed to import the pymssql module. Re-installing the charm venv')
+    retry_on_error()(
+        apt_update)(fatal=True)
+    retry_on_error()(
+        apt_install)(packages=['python3-pip'], fatal=True)
+    retry_on_error()(
+        subprocess.check_call)([
+            'pip3', 'install', '--upgrade', '--force-reinstall',
+            '--target=venv', '--requirement=requirements.txt'])
+    from pymssql import connect  # NOQA:F401
 
 
 class MSSQLDatabaseClient(object):
