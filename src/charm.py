@@ -16,7 +16,7 @@ from ops.main import main
 
 from interface_mssql_cluster import MssqlCluster
 from interface_hacluster import HaCluster
-from interface_mssql import MssqlDBProvides
+from interface_mssql_provider import MssqlDBProvider
 from utils import retry_on_error
 
 logger = logging.getLogger(__name__)
@@ -49,7 +49,7 @@ class MSSQLCharm(CharmBase):
         self.state.set_default(initialized=False)
         self.cluster = MssqlCluster(self, 'cluster')
         self.ha = HaCluster(self, 'ha')
-        self.db_provider = MssqlDBProvides(self, 'db')
+        self.db_provider = MssqlDBProvider(self, 'db')
         self.framework.observe(
             self.on.install,
             self.on_install)

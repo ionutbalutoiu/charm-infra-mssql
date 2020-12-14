@@ -6,11 +6,11 @@ from ops.testing import Harness
 from ops.charm import CharmBase
 
 import interface_hacluster
-import interface_mssql
+import interface_mssql_provider
 import interface_mssql_cluster
 
 
-class TestInterfaceMssqlDBProvides(unittest.TestCase):
+class TestInterfaceMssqlDBProvider(unittest.TestCase):
 
     TEST_VIP_ADDRESS = '10.0.0.100'
 
@@ -58,8 +58,8 @@ class TestInterfaceMssqlDBProvides(unittest.TestCase):
             self.harness.charm, 'cluster')
         self.harness.charm.ha = interface_hacluster.HaCluster(
             self.harness.charm, 'ha')
-        self.harness.charm.db_provider = interface_mssql.MssqlDBProvides(
-            self.harness.charm, 'db')
+        self.harness.charm.db_provider = \
+            interface_mssql_provider.MssqlDBProvider(self.harness.charm, 'db')
         rel_id = self.harness.add_relation('db', 'mssqlconsumer')
         self.harness.add_relation_unit(rel_id, 'mssqlconsumer/0')
         self.harness.update_relation_data(

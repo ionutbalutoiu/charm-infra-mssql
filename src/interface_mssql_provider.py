@@ -1,5 +1,5 @@
 """
-Implementation of the MSSQL charm database interface.
+Implementation of the MSSQL charm database provider interface.
 """
 
 import logging
@@ -10,7 +10,7 @@ from charmhelpers.core import host
 logger = logging.getLogger(__name__)
 
 
-class MssqlDBProvides(Object):
+class MssqlDBProvider(Object):
 
     def __init__(self, charm, relation_name):
         super().__init__(charm, relation_name)
