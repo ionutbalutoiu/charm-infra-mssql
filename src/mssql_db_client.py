@@ -8,7 +8,25 @@ import grp
 import os
 import time
 
-from pymssql import connect
+from charmhelpers.fetch.python.packages import pip_install
+
+from utils import retry_on_error
+
+try:
+    from pymssql import connect  # NOQA:F401
+except ImportError:
+    # We install 'pymssql' package from the deployment machine instead
+    # of using the charm 'requirements.txt', because the package is installed
+    # with a pre-compiled cpython library, which is pre-compiled for every
+    # supported Python version.
+    # So, when we build the charm via 'charmcraft build', the built charm
+    # will contain the cpython library corresponding to the Python version
+    # used to build the charm. The Python version from the deployment machine
+    # might not be the same, and the charm will fail to import 'pymssql'.
+    # For example: we build Ubuntu Focal with Python 3.8, and we deploy on
+    # Ubuntu Bionic with Python 3.6.
+    retry_on_error()(pip_install)(package='pymssql', fatal=True)
+    from pymssql import connect  # NOQA:F401
 
 logger = logging.getLogger(__name__)
 

@@ -1,4 +1,5 @@
 netifaces
+pymssql
 mock
 flake8
 stestr
